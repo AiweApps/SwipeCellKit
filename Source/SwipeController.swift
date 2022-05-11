@@ -8,11 +8,28 @@
 import Foundation
 import UIKit
 
-extension UIApplication {
+fileprivate extension UIApplication {
+    
      static func topmostViewController()  -> UIViewController? {
-         return UIApplication.shared.keyWindow?.rootViewController
+         return UIApplication.shared.keyWindow?.rootViewController?.topVC()
      }
+    
  }
+
+fileprivate extension UIViewController {
+    
+    func topVC() -> UIViewController {
+        if let controller = (self as? UINavigationController)?.visibleViewController {
+            return controller.topVC()
+        } else if let controller = (self as? UITabBarController)?.selectedViewController {
+            return controller.topVC()
+        } else if let controller = presentedViewController {
+            return controller.topVC()
+        }
+        return self
+    }
+    
+}
 
 protocol SwipeControllerDelegate: class {
     
@@ -375,7 +392,8 @@ extension SwipeController: UIGestureRecognizerDelegate {
     }
 
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-         if let topmost = UIApplication.topmostViewController() as? UINavigationController {
+        let top = UIApplication.topmostViewController()
+        if let topmost = (top as? UINavigationController) ?? top?.navigationController {
              if gestureRecognizer == self.panGestureRecognizer && otherGestureRecognizer == topmost.interactivePopGestureRecognizer {
                  return true
              }
