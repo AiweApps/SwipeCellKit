@@ -8,6 +8,12 @@
 import Foundation
 import UIKit
 
+extension UIApplication {
+     static func topmostViewController()  -> UIViewController? {
+         return UIApplication.shared.keyWindow?.rootViewController
+     }
+ }
+
 protocol SwipeControllerDelegate: class {
     
     func swipeController(_ controller: SwipeController, canBeginEditingSwipeableFor orientation: SwipeActionsOrientation) -> Bool
@@ -367,6 +373,15 @@ extension SwipeController: UIGestureRecognizerDelegate {
         
         return true
     }
+
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+         if let topmost = UIApplication.topmostViewController() as? UINavigationController {
+             if gestureRecognizer == self.panGestureRecognizer && otherGestureRecognizer == topmost.interactivePopGestureRecognizer {
+                 return true
+             }
+         }
+         return false
+     }
 }
 
 extension SwipeController: SwipeActionsViewDelegate {
