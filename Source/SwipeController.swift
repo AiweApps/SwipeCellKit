@@ -64,6 +64,7 @@ class SwipeController: NSObject {
     var originalCenter: CGFloat = 0
     var scrollRatio: CGFloat = 1.0
     var originalLayoutMargins: UIEdgeInsets = .zero
+    var animationDuration: Double = 0.7
     
     lazy var panGestureRecognizer: UIPanGestureRecognizer = {
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan(gesture:)))
@@ -146,7 +147,7 @@ class SwipeController: NSObject {
                     let centerForTranslationToEdge = swipeable.bounds.midX - targetOffset * actionsView.orientation.scale
                     let delta = centerForTranslationToEdge - originalCenter
                     
-                    animate(toOffset: centerForTranslationToEdge)
+                    animate(duration: animationDuration, toOffset: centerForTranslationToEdge)
                     gesture.setTranslation(CGPoint(x: delta, y: 0), in: swipeable.superview!)
                 } else {
                     target.center.x = gesture.elasticTranslation(in: target,
@@ -183,7 +184,7 @@ class SwipeController: NSObject {
                 let distance = targetOffset - actionsContainerView.center.x
                 let normalizedVelocity = velocity.x * scrollRatio / distance
                 
-                animate(toOffset: targetOffset, withInitialVelocity: normalizedVelocity) { _ in
+                animate(duration: animationDuration, toOffset: targetOffset, withInitialVelocity: normalizedVelocity) { _ in
                     if self.swipeable?.state == .center {
                         self.reset()
                     }
@@ -502,7 +503,7 @@ extension SwipeController: SwipeActionsViewDelegate {
         let targetCenter = self.targetCenter(active: false)
         
         if animated {
-            animate(toOffset: targetCenter) { complete in
+            animate(duration: animationDuration, toOffset: targetCenter) { complete in
                 self.reset()
                 completion?(complete)
             }
@@ -553,7 +554,7 @@ extension SwipeController: SwipeActionsViewDelegate {
         let targetCenter = abs(offset) == CGFloat.greatestFiniteMagnitude ? self.targetCenter(active: true) : swipeable.bounds.midX + maxOffset
         
         if animated {
-            animate(toOffset: targetCenter) { complete in
+            animate(duration: animationDuration, toOffset: targetCenter) { complete in
                 completion?(complete)
             }
         } else {
