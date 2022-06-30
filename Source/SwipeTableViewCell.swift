@@ -17,7 +17,10 @@ open class SwipeTableViewCell: UITableViewCell {
     
     /// The object that acts as the delegate of the `SwipeTableViewCell`.
     public weak var delegate: SwipeTableViewCellDelegate?
-    
+    public var animationDuration: Double = 0.7 {
+        didSet { swipeController.animationDuration = animationDuration }
+    }
+ 
     var state = SwipeState.center
     var actionsView: SwipeActionsView?
     var scrollView: UIScrollView? {
