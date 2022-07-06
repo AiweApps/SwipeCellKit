@@ -20,6 +20,9 @@ open class SwipeTableViewCell: UITableViewCell {
     public var animationDuration: Double = 0.7 {
         didSet { swipeController.animationDuration = animationDuration }
     }
+    public var forceCloseWhenRelease: Bool = false {
+        didSet { swipeController.forceCloseWhenRelease = forceCloseWhenRelease }
+    }
  
     var state = SwipeState.center
     var actionsView: SwipeActionsView?
