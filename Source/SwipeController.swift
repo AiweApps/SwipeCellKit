@@ -65,7 +65,8 @@ class SwipeController: NSObject {
     var scrollRatio: CGFloat = 1.0
     var originalLayoutMargins: UIEdgeInsets = .zero
     var animationDuration: Double = 0.7
-    
+    var forceCloseWhenRelease: Bool = true
+
     lazy var panGestureRecognizer: UIPanGestureRecognizer = {
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan(gesture:)))
         gesture.delegate = self
@@ -180,7 +181,7 @@ class SwipeController: NSObject {
             if actionsView.expanded == true, let expandedAction = actionsView.expandableAction  {
                 perform(action: expandedAction)
             } else {
-                let targetOffset = targetCenter(active: swipeable.state.isActive)
+                let targetOffset = targetCenter(active: forceCloseWhenRelease ? false : swipeable.state.isActive)
                 let distance = targetOffset - actionsContainerView.center.x
                 let normalizedVelocity = velocity.x * scrollRatio / distance
                 
