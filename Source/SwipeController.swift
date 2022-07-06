@@ -65,7 +65,7 @@ class SwipeController: NSObject {
     var scrollRatio: CGFloat = 1.0
     var originalLayoutMargins: UIEdgeInsets = .zero
     var animationDuration: Double = 0.7
-    var forceCloseWhenRelease: Bool = true
+    var forceCloseWhenRelease: Bool = false
 
     lazy var panGestureRecognizer: UIPanGestureRecognizer = {
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan(gesture:)))
