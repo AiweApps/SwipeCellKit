@@ -26,6 +26,9 @@ open class SwipeTableViewCell: UITableViewCell {
     public var shouldBeginPanGesture: ((UIPanGestureRecognizer) -> Bool)? {
         didSet { swipeController.shouldBeginPanGesture = shouldBeginPanGesture }
     }
+    public var isMenuClosed: Bool {
+        return state == .center
+    }
  
     var state = SwipeState.center
     var actionsView: SwipeActionsView?
