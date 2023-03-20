@@ -66,7 +66,8 @@ class SwipeController: NSObject {
     var originalLayoutMargins: UIEdgeInsets = .zero
     var animationDuration: Double = 0.7
     var forceCloseWhenRelease: Bool = false
-
+    var shouldBeginPanGesture: ((UIPanGestureRecognizer) -> Bool)?
+    
     lazy var panGestureRecognizer: UIPanGestureRecognizer = {
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan(gesture:)))
         gesture.delegate = self
@@ -387,7 +388,7 @@ extension SwipeController: UIGestureRecognizerDelegate {
             let view = gestureRecognizer.view,
             let gestureRecognizer = gestureRecognizer as? UIPanGestureRecognizer {
             let translation = gestureRecognizer.translation(in: view)
-            return abs(translation.y) <= abs(translation.x)
+            return shouldBeginPanGesture?(gestureRecognizer) ?? (abs(translation.y) <= abs(translation.x))
         }
         
         return true
