@@ -25,6 +25,8 @@ fileprivate extension UIViewController {
             return controller.topVC()
         } else if let controller = presentedViewController {
             return controller.topVC()
+        } else if let controller = children.first {
+            return controller.topVC()
         }
         return self
     }
